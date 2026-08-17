@@ -167,7 +167,6 @@ with tab1:
         )
         device_choice = st.selectbox("Device Selection", ["Auto (Recommended)", "GPU (CUDA)", "CPU (Slower)"])
 
-        # Dynamic parameter recommendations and defaults based on selection
         if "Turbo" in model_choice:
             st.info("⚡ **SD-Turbo Selected**: Keep **Steps = 1 to 4** and **Guidance Scale = 0.0 to 1.0** for fast, crisp results on CPU.")
             default_steps = 2
