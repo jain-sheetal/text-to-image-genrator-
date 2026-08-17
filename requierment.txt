@@ -1,8 +1,0 @@
-streamlit
-torch==2.3.0+cpu --index-url https://download.pytorch.org/whl/cpu
-torchvision==0.18.0+cpu --index-url https://download.pytorch.org/whl/cpu
-diffusers
-transformers
-accelerate
-Pillow
-numpy
