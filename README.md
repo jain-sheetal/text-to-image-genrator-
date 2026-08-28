@@ -1,5 +1,5 @@
 # 🎨 Educational Stable Diffusion Text-to-Image Generator
-LIVE DEMO : https://8ee60f5ffe1c491c9d.gradio.live/
+LIVE DEMO :https://1620c88b568866f51d.gradio.live/
 
 An interactive text-to-image web application built with **Hugging Face Diffusers**, **PyTorch**, and **Gradio**. This project provides a full-featured UI to generate images using diffusion models while demonstrating key Generative AI concepts, scheduler comparisons, and VRAM memory optimization techniques.
 
