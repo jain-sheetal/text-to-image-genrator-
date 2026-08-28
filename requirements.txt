@@ -1,4 +1,0 @@
-streamlit
-huggingface_hub
-Pillow
-requests
