@@ -47,9 +47,3 @@ An interactive text-to-image web application built with **Hugging Face Diffusers
 
 ---
 
-## 🚀 Installation & Setup
-
-1. **Clone the repository:**
-   ```bash
-   git clone [https://github.com/your-username/educational-stable-diffusion.git](https://github.com/your-username/educational-stable-diffusion.git)
-   cd educational-stable-diffusion
