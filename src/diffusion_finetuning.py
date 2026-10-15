@@ -109,17 +109,44 @@ class DomainAdaptationEngine:
         size = 384
         domain_info = self.domains.get(domain_name, self.domains["Artwork & Masterpiece Styles"])
 
-        # Base Image (Neutral / generic appearance)
-        base_img = Image.new("RGB", (size, size), (45, 55, 72))
-        draw_b = ImageDraw.Draw(base_img)
-        draw_b.rectangle([40, 40, size - 40, size - 40], fill=(74, 85, 104), outline=(160, 174, 192), width=2)
-        draw_b.ellipse([100, 100, size - 100, size - 100], fill=(113, 128, 150))
-        draw_b.text((50, 50), "Base Model Output (Generic)", fill=(255, 255, 255))
-        draw_b.text((50, 75), f"Prompt: {prompt[:35]}...", fill=(203, 213, 225))
+        # Try generating real AI images for base and domain-adapted
+        base_img = None
+        adapted_img = None
+        try:
+            import urllib.request
+            import urllib.parse
+            import io
 
-        # Domain-Adapted Image (Stylized according to domain)
-        adapted_img = Image.new("RGB", (size, size), (15, 23, 42))
-        draw_a = ImageDraw.Draw(adapted_img)
+            clean_p = prompt.replace("\n", " ").strip()
+            # 1. Base image (generic prompt)
+            enc_base = urllib.parse.quote(f"{clean_p}, standard digital rendering")
+            url_b = f"https://image.pollinations.ai/prompt/{enc_base}?width={size}&height={size}&seed={seed or 42}&nologo=true"
+            req_b = urllib.request.Request(url_b, headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(req_b, timeout=12) as resp:
+                base_img = Image.open(io.BytesIO(resp.read())).convert("RGB")
+
+            # 2. Domain-adapted image (with trigger token and domain style)
+            enc_adapt = urllib.parse.quote(f"{clean_p}, {domain_name}, specialized domain style, high quality")
+            url_a = f"https://image.pollinations.ai/prompt/{enc_adapt}?width={size}&height={size}&seed={(seed or 42) + 1}&nologo=true"
+            req_a = urllib.request.Request(url_a, headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(req_a, timeout=12) as resp:
+                adapted_img = Image.open(io.BytesIO(resp.read())).convert("RGB")
+        except Exception:
+            pass
+
+        if base_img is None:
+            # Base Image fallback
+            base_img = Image.new("RGB", (size, size), (45, 55, 72))
+            draw_b = ImageDraw.Draw(base_img)
+            draw_b.rectangle([40, 40, size - 40, size - 40], fill=(74, 85, 104), outline=(160, 174, 192), width=2)
+            draw_b.ellipse([100, 100, size - 100, size - 100], fill=(113, 128, 150))
+            draw_b.text((50, 50), "Base Model Output (Generic)", fill=(255, 255, 255))
+            draw_b.text((50, 75), f"Prompt: {prompt[:35]}...", fill=(203, 213, 225))
+
+        if adapted_img is None:
+            # Domain-Adapted Image fallback
+            adapted_img = Image.new("RGB", (size, size), (15, 23, 42))
+            draw_a = ImageDraw.Draw(adapted_img)
 
         if "Medical" in domain_name:
             # Render authentic medical radiograph look

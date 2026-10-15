@@ -89,6 +89,12 @@ def handle_text_to_image(
         return None, err_md, gallery_history
 
 
+def handle_load_local_gpu(model_choice: str):
+    target_id = "stabilityai/sd-turbo" if "Turbo" in model_choice else "runwayml/stable-diffusion-v1-5"
+    status = pipeline.load_local_diffusion(target_id)
+    return status
+
+
 def handle_cgan_generation(shape_name: str, seed: int, latent_var: float):
     try:
         img, meta = cgan_engine.generate(
@@ -280,19 +286,28 @@ with gr.Blocks(title="🎨 Generative AI Studio") as demo:
                     with gr.Row():
                         model_dropdown = gr.Dropdown(
                             choices=[
-                                "Stable Diffusion 1.5 (Recommended)",
-                                "SD-Turbo (Ultra-Fast 1-4 Steps)",
-                                "FLUX.1-schnell (Cloud Serverless Engine)",
+                                "Cloud Diffusion Engine (FLUX.1 / SDXL - Photorealistic)",
+                                "Local Stable Diffusion 1.5 (RTX 3050 CUDA GPU)",
+                                "Local SD-Turbo (1-4 Steps Fast GPU)",
                                 "Conditional GAN (Shape Synthesis)",
                                 "Attention-Enhanced GAN (Cross-Attention)"
                             ],
-                            value="Stable Diffusion 1.5 (Recommended)",
+                            value="Cloud Diffusion Engine (FLUX.1 / SDXL - Photorealistic)",
                             label="Generative Architecture"
                         )
                         scheduler_dropdown = gr.Dropdown(
                             choices=["euler_a", "euler", "ddim", "dpm_solver", "lms"],
                             value="euler_a",
                             label="Denoising Scheduler"
+                        )
+
+                    with gr.Row():
+                        load_gpu_btn = gr.Button("⚡ Load Model into RTX 3050 GPU VRAM", variant="secondary")
+                        load_gpu_status = gr.Textbox(
+                            label="GPU Model Status",
+                            value="Ready (Cloud Diffusion active by default for instant photorealistic generation)",
+                            interactive=False,
+                            lines=1
                         )
 
                     with gr.Accordion("🔧 Advanced Hyperparameters", open=False):
@@ -318,6 +333,12 @@ with gr.Blocks(title="🎨 Generative AI Studio") as demo:
 
             gr.Markdown("### 🖼️ Session Generation History")
             history_gallery = gr.Gallery(label="Recent Generations", columns=4, height=220)
+
+            load_gpu_btn.click(
+                fn=handle_load_local_gpu,
+                inputs=[model_dropdown],
+                outputs=[load_gpu_status]
+            )
 
             generate_btn.click(
                 fn=handle_text_to_image,

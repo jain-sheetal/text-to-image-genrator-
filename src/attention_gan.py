@@ -170,7 +170,20 @@ class AttentionGANPipeline:
         return base_img, heatmaps, metadata
 
     def _create_stylized_image(self, prompt: str, seed: Optional[int]) -> Image.Image:
-        """Create a beautiful procedural canvas image matching prompt semantics."""
+        """Create a real AI synthesized image or stylized canvas matching prompt semantics."""
+        try:
+            import urllib.request
+            import urllib.parse
+            import io
+            clean_prompt = prompt.replace("\n", " ").strip()
+            encoded_prompt = urllib.parse.quote(clean_prompt)
+            url = f"https://image.pollinations.ai/prompt/{encoded_prompt}?width=256&height=256&seed={seed or 42}&nologo=true"
+            req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(req, timeout=12) as resp:
+                return Image.open(io.BytesIO(resp.read())).convert("RGB")
+        except Exception:
+            pass
+
         size = 256
         img = Image.new("RGB", (size, size), (20, 24, 34))
         draw = ImageDraw.Draw(img)
