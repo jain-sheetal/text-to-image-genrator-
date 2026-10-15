@@ -234,26 +234,30 @@ class UnifiedTextToImagePipeline:
                 pass
 
         # 2. High-speed Cloud Diffusion API (FLUX.1 / SDXL, real photorealistic AI synthesis, no token required)
-        try:
-            import urllib.request
-            import urllib.parse
-            import io
+        for attempt in range(2):
+            try:
+                import urllib.request
+                import urllib.parse
+                import io
 
-            w = min(1024, max(256, (width // 64) * 64))
-            h = min(1024, max(256, (height // 64) * 64))
-            clean_prompt = prompt.replace("\n", " ").strip()
-            encoded_prompt = urllib.parse.quote(clean_prompt)
-            url = f"https://image.pollinations.ai/prompt/{encoded_prompt}?width={w}&height={h}&seed={seed}&nologo=true"
-            req = urllib.request.Request(
-                url,
-                headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
-            )
-            with urllib.request.urlopen(req, timeout=20) as resp:
-                res_img = Image.open(io.BytesIO(resp.read())).convert("RGB")
-                return res_img, "Cloud Diffusion Engine (FLUX.1 / SDXL - Photorealistic)"
-        except Exception:
-            # Emergency fallback: procedural synthesis
-            return self._generate_procedural_visual(prompt, seed), "High-Speed Procedural Simulator (Offline)"
+                w = min(1024, max(256, (width // 64) * 64))
+                h = min(1024, max(256, (height // 64) * 64))
+                clean_prompt = prompt.replace("\n", " ").strip()
+                encoded_prompt = urllib.parse.quote(clean_prompt)
+                safe_seed = abs(int(seed) + attempt * 17) % 1000000
+                url = f"https://image.pollinations.ai/prompt/{encoded_prompt}?width={w}&height={h}&seed={safe_seed}&nologo=true"
+                req = urllib.request.Request(
+                    url,
+                    headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+                )
+                with urllib.request.urlopen(req, timeout=30) as resp:
+                    res_img = Image.open(io.BytesIO(resp.read())).convert("RGB")
+                    return res_img, "Cloud Diffusion Engine (FLUX.1 / SDXL - Photorealistic)"
+            except Exception:
+                time.sleep(0.5)
+
+        # Emergency fallback: procedural synthesis
+        return self._generate_procedural_visual(prompt, seed), "High-Speed Procedural Simulator (Offline)"
 
     def _generate_procedural_visual(self, prompt: str, seed: int) -> Image.Image:
         """Generates rich artistic rendering based on prompt keywords and latent seed."""
