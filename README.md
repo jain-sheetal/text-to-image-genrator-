@@ -1,14 +1,4 @@
----
-title: Educational Stable Diffusion & Generative AI Studio
-emoji: 🎨
-colorFrom: indigo
-colorTo: purple
-sdk: gradio
-sdk_version: 6.30.0
-app_file: app.py
-pinned: false
-license: mit
-short_description: Unified Text-to-Image Lab with CGAN, Attention GAN, HF Tokenizers & LoRA
+
 ---
 
 # 🎨 Educational Generative AI & Text-to-Image Studio
@@ -131,25 +121,6 @@ http://localhost:7860
 
 ---
 
-## 🌐 Free 24/7 Deployment Guide
-
-### Option A: Deploy to Hugging Face Spaces (Recommended - Free & Permanent)
-Hugging Face Spaces provides permanent 24/7 hosting for Gradio applications without 72-hour tunnel expirations.
-
-1. Go to [Hugging Face Spaces](https://huggingface.co/spaces) and click **"Create new Space"**.
-2. Set Space Name: `text-to-image-generator`.
-3. Select **Gradio** as the Space SDK.
-4. Set Space Hardware to **Free CPU (16GB RAM)** or **ZeroGPU**.
-5. Connect your GitHub repository `jain-sheetal/text-to-image-genrator-` (or push files directly via git).
-6. Hugging Face will automatically read `app.py`, install `requirements.txt`, and deploy your live app with a permanent URL:
-   `https://huggingface.co/spaces/<your-username>/text-to-image-generator`
-
-### Option B: Deploy to Streamlit Community Cloud
-1. Fork or push this repository to GitHub.
-2. Sign in to [Streamlit Community Cloud](https://share.streamlit.io/).
-3. Select your repository, choose branch `main`, and set the main file path to `app.py`.
-4. Click **Deploy**.
-
 ---
 
 ## 📂 Repository File Structure
@@ -170,6 +141,7 @@ text-to-image-generator/
 │   └── pipeline.py             # End-to-end unified production pipeline
 └── text_to_image_genreator.ipynb # Interactive Jupyter Notebook
 ```
+
 
 ---
 
