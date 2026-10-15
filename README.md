@@ -1,4 +1,14 @@
-
+---
+title: Educational Stable Diffusion & Generative AI Studio
+emoji: 🎨
+colorFrom: indigo
+colorTo: purple
+sdk: gradio
+sdk_version: 6.30.0
+app_file: app.py
+pinned: false
+license: mit
+short_description: Unified Text-to-Image Lab with CGAN, Attention GAN, HF Tokenizers & LoRA
 ---
 
 # 🎨 Educational Generative AI & Text-to-Image Studio
