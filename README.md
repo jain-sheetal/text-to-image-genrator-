@@ -13,13 +13,22 @@ short_description: Unified Text-to-Image Lab with CGAN, Attention GAN, HF Tokeni
 
 # 🎨 Educational Generative AI & Text-to-Image Studio
 
-[![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-yellow)](https://huggingface.co/spaces)
+[![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Live%20Demo-yellow)](https://huggingface.co/spaces/jain-sheetal/text-to-image-generator)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
 [![Gradio](https://img.shields.io/badge/Gradio-UI-orange)](https://gradio.app/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 An interactive, end-to-end Generative AI laboratory and web application built with **PyTorch**, **Hugging Face Transformers & Diffusers**, and **Gradio**. This project bridges theory and practice, encompassing **Conditional GANs**, **Self/Cross-Attention Mechanisms**, **Transformer Tokenization & Embeddings**, **Benchmark Dataset Analytics (Oxford-102 Flowers & MS-COCO)**, and **Parameter-Efficient Diffusion Fine-Tuning (LoRA)**.
+
+---
+
+## 🚀 Live Demo
+
+Access the live deployed application here:
+👉 **[https://huggingface.co/spaces/jain-sheetal/text-to-image-generator](https://huggingface.co/spaces/jain-sheetal/text-to-image-generator)**
+
+> 💡 **Cloud Deployment:** Hosted natively via Hugging Face Spaces on Gradio SDK with automated cloud inference fallback and zero-VRAM serverless routing.
 
 ---
 
